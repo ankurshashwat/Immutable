@@ -22,8 +22,11 @@ contract Immutable {
     // Counter to assign unique IDs to each FIR
     uint public count = 0;
 
-    // Function to save FIR to the mapping
-    function saveFIR(
+    // Event to be emitted when a new FIR is logged
+    event NewFIR(uint Id, address sender);
+
+    // Function to File FIR to the mapping
+    function FileFIR(
         address _sender,
         uint _aadhar,
         string memory _fullname,
@@ -52,6 +55,9 @@ contract Immutable {
             _witness,
             _complaint
         );
+
+        // Emit the NewFIR event
+        emit NewFIR(Id, _sender);
     }
 
     // Function to retrieve FIR by ID
@@ -74,7 +80,7 @@ contract Immutable {
         )
     {
         // Retrieve the FIR from the mapping
-        FIR memory report = Reports[Id];
+        FIR storage report = Reports[Id];
 
         // Return the FIR's Data
         return (
